@@ -16,6 +16,7 @@ variables:
 
 steps:
 - task: DotNetCoreCLI@2
+  displayName: 'Build web project'
   inputs:
     command: 'build'
     projects: $(SolutionPath)
