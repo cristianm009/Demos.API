@@ -15,32 +15,24 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
   inputs:
-    restoreSolution: '$(solution)'
+    command: 'build'
+    projects: $(SolutionPath)
     
-- task: MSBuild@1
+- task: DotNetCoreCLI@2
+  displayName: 'Publish and zip'
   inputs:
-    solution: '**/*.sln'
-    clean: true
-    restoreNugetPackages: true
+    command: publish
+    publishWebProjects: False
+    projects: $(SolutionPath)
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
 
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)'
-    includeRootFolder: true
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true    
-  
 - task: AzureWebApp@1
+  displayName: 'Deploy Azure Web App'
   inputs:
     azureSubscription: 'Pay-As-You-Go(a846fe0d-ac87-40e1-93ff-078142b6164c)'
     appType: 'webAppLinux'
     appName: 'demosapicmejia'
-    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
-
-
-  
+    package: $(Build.ArtifactStagingDirectory)/**/*.zip
