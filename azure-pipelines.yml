@@ -26,7 +26,15 @@ steps:
     solution: '**/*.sln'
     clean: true
     restoreNugetPackages: true
-    
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true    
+  
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Pay-As-You-Go(a846fe0d-ac87-40e1-93ff-078142b6164c)'
