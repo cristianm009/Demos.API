@@ -20,17 +20,19 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
-
-- task: VSBuild@1
+    
+- task: MSBuild@1
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
+    solution: '**/*.sln'
+    clean: true
+    restoreNugetPackages: true
+    
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Pay-As-You-Go(a846fe0d-ac87-40e1-93ff-078142b6164c)'
     appType: 'webAppLinux'
     appName: 'demosapicmejia'
     package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+
+
+  
