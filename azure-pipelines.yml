@@ -22,6 +22,7 @@ steps:
     restoreSolution: '$(solution)'
 
 - task: VSBuild@1
+  displayName: 'Build Demos.API'
   inputs:
     solution: '$(solution)'
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
@@ -29,14 +30,24 @@ steps:
     configuration: '$(buildConfiguration)'
 
 - task: VSTest@2
+  displayName: 'Test Demos.API'
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 - task: PublishBuildArtifacts@1
+  displayName: 'Publish Demos.API'
+
 - task: AzureWebApp@1
-  displayName: 'Deploy Azure Web App'
+  displayName: 'Deploy Azure Web App demosapicmejia'
   inputs:
     azureSubscription: 'Pay-As-You-Go(a846fe0d-ac87-40e1-93ff-078142b6164c)'
     appType: 'webAppLinux'
     appName: 'demosapicmejia'
     package: $(Build.ArtifactStagingDirectory)/**/*.zip
+
+- task: AzureAppServiceManage@0
+  displayName: 'Restart Azure Web App '
+  inputs:
+    azureSubscription: 'Pay-As-You-Go(a846fe0d-ac87-40e1-93ff-078142b6164c)'
+    Action: 'Restart Azure App Service'
+    WebAppName: 'demosapicmejia'
