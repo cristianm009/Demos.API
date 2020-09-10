@@ -15,21 +15,6 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: DotNetCoreCLI@2
-  displayName: 'Build web project'
-  inputs:
-    command: 'build'
-    projects: $(SolutionPath)
-    
-- task: DotNetCoreCLI@2
-  displayName: 'Publish and zip'
-  inputs:
-    command: publish
-    publishWebProjects: False
-    projects: $(SolutionPath)
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: True
-
 - task: AzureWebApp@1
   displayName: 'Deploy Azure Web App'
   inputs:
