@@ -1,11 +1,11 @@
-﻿using MediatR;
-using MongoDB.Driver;
-using System.Threading;
-using System.Threading.Tasks;
-using Demos.API.Application.Commands;
+﻿using Demos.API.Application.Commands;
 using Demos.API.Application.Models;
 using Demos.API.Application.Models.EntityModels;
 using Demos.API.Application.Models.ResponseModels;
+using MediatR;
+using MongoDB.Driver;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Demos.API.Application.Handlers.Commnads
 {
