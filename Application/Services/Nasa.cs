@@ -28,21 +28,31 @@ namespace Demos.API.Application.Services
                 .WaitAndRetryAsync(MaxRetries, times =>
                 TimeSpan.FromMilliseconds(times * 100));
         }
-        public async Task<string> getDONKIAsync()
+        public async Task<string> getNasaInfo()
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                Random random = new Random();
                 return await _retryPolicy.ExecuteAsync(async () =>
-                   {
-                       if (random.Next(1, 3) == 1)
-                           throw new HttpRequestException("Fake request exception");
-                       var commicResult = await httpClient.GetAsync("https://api.nasa.gov/DONKI/CMEAnalysis?startDate=2016-09-01&endDate=2016-09-30&mostAccurateOnly=true&speed=500&halfAngle=30&catalog=ALL&api_key=wHFHLf2JGLZwYpki5vreuF9OLzB5KByRRhgN8ELI");
-                       if (commicResult.StatusCode == HttpStatusCode.NotFound)
-                           return null;
-                       var resultContent = await commicResult.Content.ReadAsStringAsync();
-                       return JsonSerializer.Serialize(resultContent.ToString());
-                   });
+                {
+                    GenerateException();
+                    var commicResult = await httpClient.GetAsync("https://api.nasa.gov/DONKI/CMEAnalysis?startDate=2016-09-01&endDate=2016-09-30&mostAccurateOnly=true&speed=500&halfAngle=30&catalog=ALL&api_key=wHFHLf2JGLZwYpki5vreuF9OLzB5KByRRhgN8ELI");
+                    if (commicResult.StatusCode == HttpStatusCode.NotFound)
+                        return null;
+                    var resultContent = await commicResult.Content.ReadAsStringAsync();
+                    return JsonSerializer.Serialize(resultContent.ToString());
+                });
+            }
+        }
+
+        private static void GenerateException()
+        {
+            Random random = new Random();
+            var randomData = random.Next(1, 6);
+            switch (randomData)
+            {
+                case 1: throw new HttpRequestException("Fake request exception");
+                case 2: throw new UnauthorizedAccessException("Fake Unauthorized exception");
+                case 3: throw new Exception("Fake exception");
             }
         }
     }

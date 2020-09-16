@@ -22,7 +22,7 @@ namespace Demos.API.Controllers
         [HttpGet]
         public Task<string> Get()
         {
-            return _nasa.getDONKIAsync();
+            return _nasa.getNasaInfo();
         }
     }
 }

@@ -1,4 +1,5 @@
 using Demos.API.Application.Contracts;
+using Demos.API.Application.Filters;
 using Demos.API.Application.Models;
 using Demos.API.Application.Services;
 using MediatR;
@@ -29,7 +30,7 @@ namespace Demos.API
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(provider => provider.GetRequiredService<IOptions<DatabaseSettings>>().Value);
             services.AddScoped<INasa, Nasa>();
-            services.AddControllers();
+            services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             //services.AddSwaggerGen();
