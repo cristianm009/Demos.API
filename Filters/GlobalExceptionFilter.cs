@@ -4,7 +4,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 
-namespace Demos.API.Application.Filters
+namespace Demos.API.Filters
 {
     public class GlobalExceptionFilter : IExceptionFilter
     {
