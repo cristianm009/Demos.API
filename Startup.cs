@@ -2,6 +2,7 @@ using Demos.API.Application.Contracts;
 using Demos.API.Application.Models;
 using Demos.API.Application.Services;
 using Demos.API.Filters;
+using Demos.API.Middlewares;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -50,11 +51,11 @@ namespace Demos.API
                     { "Bearer", Enumerable.Empty<string>() },
                 }); 
                 */
-                
+
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 content.IncludeXmlComments(xmlPath);
-                
+
             });
 
             services.AddMediatR(typeof(Startup));
@@ -63,6 +64,8 @@ namespace Demos.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCustomMiddleware();
+            app.UseCustomMiddleware2();
             //Set Swagger API documentation
             app.UseSwagger();
             app.UseSwaggerUI(config =>
