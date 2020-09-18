@@ -59,6 +59,9 @@ namespace Demos.API
             });
 
             services.AddMediatR(typeof(Startup));
+
+            // Add API Versioning to the service container to your project
+            services.AddApiVersioning();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
