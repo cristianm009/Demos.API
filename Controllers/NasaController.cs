@@ -5,8 +5,11 @@ using System.Threading.Tasks;
 
 namespace Demos.API.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
+  [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     public class NasaController : Controller
     {
 
@@ -22,7 +25,15 @@ namespace Demos.API.Controllers
         [HttpGet]
         public Task<string> Get()
         {
-            return _nasa.getNasaInfo();
+            return _nasa.getDONKIInfo();
         }
+
+        [HttpGet]
+        [MapToApiVersion("2.0")]
+        public Task<string> GetV2_0()
+        {
+            return _nasa.getInSightInfo();
+        }
+
     }
 }

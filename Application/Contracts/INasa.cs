@@ -4,6 +4,7 @@ namespace Demos.API.Application.Contracts
 {
     public interface INasa
     {
-        public Task<string> getNasaInfo();
+        public Task<string> getDONKIInfo();
+        public Task<string> getInSightInfo();
     }
 }

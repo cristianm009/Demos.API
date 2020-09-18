@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Demos.API
@@ -34,8 +35,8 @@ namespace Demos.API
             services.AddScoped<INasa, Nasa>();
             services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());
 
-            // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen();
+            //Register the Swagger generator, defining 1 or more Swagger documents
+            //services.AddSwaggerGen();
             services.AddSwaggerGen(content =>
             {
                 content.SwaggerDoc("v1",
@@ -45,6 +46,8 @@ namespace Demos.API
                         Description = "Demos API V1",
                         Version = "v1"
                     });
+                content.EnableAnnotations();
+                content.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
                 /*
                 content.AddSecurityDefinition("Bearer", new ApiKeyScheme { In = "header", Description = "Please enter JWT with Bearer into field", Name = "Authorization", Type = "apiKey" });
                 content.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>

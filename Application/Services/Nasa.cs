@@ -28,17 +28,33 @@ namespace Demos.API.Application.Services
                 .WaitAndRetryAsync(MaxRetries, times =>
                 TimeSpan.FromMilliseconds(times * 100));
         }
-        public async Task<string> getNasaInfo()
+        public async Task<string> getDONKIInfo()
         {
             using (HttpClient httpClient = new HttpClient())
             {
                 return await _retryPolicy.ExecuteAsync(async () =>
                 {
                     GenerateException();
-                    var commicResult = await httpClient.GetAsync("https://api.nasa.gov/DONKI/CMEAnalysis?startDate=2016-09-01&endDate=2016-09-30&mostAccurateOnly=true&speed=500&halfAngle=30&catalog=ALL&api_key=wHFHLf2JGLZwYpki5vreuF9OLzB5KByRRhgN8ELI");
-                    if (commicResult.StatusCode == HttpStatusCode.NotFound)
+                    var result = await httpClient.GetAsync("https://api.nasa.gov/DONKI/CMEAnalysis?startDate=2016-09-01&endDate=2016-09-30&mostAccurateOnly=true&speed=500&halfAngle=30&catalog=ALL&api_key=wHFHLf2JGLZwYpki5vreuF9OLzB5KByRRhgN8ELI");
+                    if (result.StatusCode == HttpStatusCode.NotFound)
                         return null;
-                    var resultContent = await commicResult.Content.ReadAsStringAsync();
+                    var resultContent = await result.Content.ReadAsStringAsync();
+                    return JsonSerializer.Serialize(resultContent.ToString());
+                });
+            }
+        }
+
+        public async Task<string> getInSightInfo()
+        {
+            using (HttpClient httpClient = new HttpClient())
+            {
+                return await _retryPolicy.ExecuteAsync(async () =>
+                {
+                    GenerateException();
+                    var result = await httpClient.GetAsync("https://api.nasa.gov/insight_weather/?api_key=wHFHLf2JGLZwYpki5vreuF9OLzB5KByRRhgN8ELI&feedtype=json&ver=1.0");
+                    if (result.StatusCode == HttpStatusCode.NotFound)
+                        return null;
+                    var resultContent = await result.Content.ReadAsStringAsync();
                     return JsonSerializer.Serialize(resultContent.ToString());
                 });
             }
