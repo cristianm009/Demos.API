@@ -1,6 +1,7 @@
 ﻿using Demos.API.Application.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Demos.API.Controllers
@@ -33,6 +34,13 @@ namespace Demos.API.Controllers
         public Task<string> GetV2_0()
         {
             return _nasa.getInSightInfo();
+        }
+
+        [HttpGet]
+        [MapToApiVersion("3.0")]
+        public Task<string> GetV3_0([FromServices] IHttpClientFactory factory)
+        {
+            return _nasa.getInSightInfo(factory);
         }
 
     }

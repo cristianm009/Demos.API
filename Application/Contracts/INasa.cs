@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Demos.API.Application.Contracts
 {
@@ -6,5 +7,6 @@ namespace Demos.API.Application.Contracts
     {
         public Task<string> getDONKIInfo();
         public Task<string> getInSightInfo();
+        public Task<string> getInSightInfo(IHttpClientFactory factory);
     }
 }

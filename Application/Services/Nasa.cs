@@ -60,6 +60,28 @@ namespace Demos.API.Application.Services
             }
         }
 
+        public async Task<string> getInSightInfo(IHttpClientFactory factory)
+        {
+            // Add HttpClientFactory  with base address
+            var httpClient = factory.CreateClient("base");
+
+            // Add HttpClientFactory  without base address
+            /*
+            var httpClient = factory.CreateClient();           
+            httpClient.BaseAddress = new Uri("https://api.nasa.gov/insight_weather/?api_key=wHFHLf2JGLZwYpki5vreuF9OLzB5KByRRhgN8ELI&feedtype=json&ver=1.0");
+            */
+            return await _retryPolicy.ExecuteAsync(async () =>
+            {
+                GenerateException();
+                var result = await httpClient.GetAsync("");
+                if (result.StatusCode == HttpStatusCode.NotFound)
+                    return null;
+                var resultContent = await result.Content.ReadAsStringAsync();
+                return JsonSerializer.Serialize(resultContent.ToString());
+            });
+
+        }
+
         private static void GenerateException()
         {
             Random random = new Random();

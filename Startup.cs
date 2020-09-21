@@ -74,6 +74,15 @@ namespace Demos.API
                 // Advertise the API versions supported for the particular endpoint
                 config.ReportApiVersions = true;
             });
+
+            // Add HttpClientFactory  without base address
+            //services.AddHttpClient();
+
+            // Add HttpClientFactory with base addres
+            services.AddHttpClient("base", httpClient =>
+            {
+                httpClient.BaseAddress = new Uri("https://api.nasa.gov/insight_weather/?api_key=wHFHLf2JGLZwYpki5vreuF9OLzB5KByRRhgN8ELI&feedtype=json&ver=1.0");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
