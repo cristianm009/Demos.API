@@ -1,4 +1,5 @@
 ﻿using Demos.API.Application.Contracts;
+using Demos.API.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 namespace Demos.API.Controllers
 {
     //[Route("api/[controller]")]
-  [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
     [ApiVersion("2.0")]
@@ -42,6 +43,11 @@ namespace Demos.API.Controllers
         {
             return _nasa.getInSightInfo(factory);
         }
-
+        [HttpGet]
+        [MapToApiVersion("4.0")]
+        public Task<string> GetV4_0([FromServices] CustomHttpClient client)
+        {
+            return client.getInSightInfoTyped();
+        }
     }
 }

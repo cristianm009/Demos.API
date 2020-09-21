@@ -2,7 +2,6 @@
 using Polly;
 using Polly.Retry;
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -81,6 +80,8 @@ namespace Demos.API.Application.Services
             });
 
         }
+
+       
 
         private static void GenerateException()
         {

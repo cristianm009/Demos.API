@@ -83,6 +83,12 @@ namespace Demos.API
             {
                 httpClient.BaseAddress = new Uri("https://api.nasa.gov/insight_weather/?api_key=wHFHLf2JGLZwYpki5vreuF9OLzB5KByRRhgN8ELI&feedtype=json&ver=1.0");
             });
+
+            // Add custom httpclient by dependency injection
+            services.AddHttpClient<CustomHttpClient>("custom", httpClient =>
+            {
+                httpClient.BaseAddress = new Uri("https://api.nasa.gov/insight_weather/?api_key=wHFHLf2JGLZwYpki5vreuF9OLzB5KByRRhgN8ELI&feedtype=json&ver=1.0");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
